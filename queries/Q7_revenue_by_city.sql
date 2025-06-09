@@ -1,11 +1,10 @@
-SELECT city,
-       SUM(amount)
-FROM customer AS cust
-LEFT JOIN address
-    ON cust.address_id = address.address_id
-LEFT JOIN city
-    ON address.city_id = city.city_id
-LEFT JOIN payment
-    ON cust.customer_id = payment.customer_id
-GROUP BY city
-ORDER BY sum DESC
+-- Revenue by city
+SELECT 
+    ci.city,
+    SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+GROUP BY ci.city
+ORDER BY total_revenue DESC;
