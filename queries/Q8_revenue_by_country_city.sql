@@ -1,14 +1,11 @@
-SELECT country ||','||city AS country_city,
-       SUM(amount) AS sum_of_amount
-FROM payment
-LEFT JOIN customer
-    ON payment.customer_id = customer.customer_id
-LEFT JOIN address
-    ON customer.address_id = address.address_id
-LEFT JOIN city
-    ON address.city_id = city.city_id
-LEFT JOIN country
-    ON city.country_id = country.country_id
-
-GROUP BY country_city
-ORDER BY sum_of_amount 
+-- Revenue by country-city
+SELECT 
+    co.country || ', ' || ci.city AS location,
+    SUM(p.amount) AS total_revenue
+FROM payment p
+JOIN customer cu ON p.customer_id = cu.customer_id
+JOIN address a ON cu.address_id = a.address_id
+JOIN city ci ON a.city_id = ci.city_id
+JOIN country co ON ci.country_id = co.country_id
+GROUP BY location
+ORDER BY total_revenue DESC;
