@@ -1,14 +1,15 @@
-SELECT district,
-       AVG(total_amount_per_customer)
-FROM
-(SELECT district,
-       payment.customer_id,
-       SUM(amount) AS total_amount_per_customer
-FROM payment
-LEFT JOIN customer
-    ON payment.customer_id = customer.customer_id
-LEFT JOIN address
-    ON customer.address_id = address.address_id
-GROUP BY 1,2) AS total_amount
-GROUP BY 1
-ORDER BY avg DESC
+-- Average customer spend by district
+SELECT 
+    a.district,
+    ROUND(AVG(customer_total.total_amount), 2) AS avg_spend
+FROM (
+    SELECT 
+        customer_id,
+        SUM(amount) AS total_amount
+    FROM payment
+    GROUP BY customer_id
+) AS customer_total
+JOIN customer c ON customer_total.customer_id = c.customer_id
+JOIN address a ON c.address_id = a.address_id
+GROUP BY a.district
+ORDER BY avg_spend DESC;
