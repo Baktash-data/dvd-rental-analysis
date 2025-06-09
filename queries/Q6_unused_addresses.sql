@@ -1,5 +1,6 @@
-SELECT *
-FROM address AS ad
-LEFT JOIN customer AS cust
-    ON ad.address_id = cust.address_id
-WHERE first_name IS NULL
+-- Unused customer addresses
+SELECT 
+    a.* 
+FROM address a
+LEFT JOIN customer c ON a.address_id = c.address_id
+WHERE c.customer_id IS NULL;
