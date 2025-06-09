@@ -1,10 +1,10 @@
-SELECT title,
-       length,
-       name
-FROM film AS f
-LEFT JOIN film_category AS fc
-    ON f.film_id = fc.film_id
-LEFT JOIN category AS cat
-    ON fc.category_id = cat.category_id
-WHERE name IN('Drama','Sports')
-ORDER BY length DESC
+-- Longest films in Drama/Sports categories
+SELECT 
+    f.title,
+    f.length,
+    c.name AS category
+FROM film f
+LEFT JOIN film_category fc ON f.film_id = fc.film_id
+LEFT JOIN category c ON fc.category_id = c.category_id
+WHERE c.name IN ('Drama', 'Sports')
+ORDER BY f.length DESC;
